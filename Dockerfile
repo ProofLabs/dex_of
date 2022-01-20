@@ -40,6 +40,7 @@ WORKDIR /home/aimed_user/dexof_work
 
 ADD ./dexof.tgz /home/aimed_user
 ADD ./testcase.tgz /home/aimed_user
+ADD ./docs.tgz /home/aimed_user
 
 RUN  sudo chown -R aimed_user.aimed_user  /home/aimed_user/dex_of;\
      sudo chown -R aimed_user.aimed_user  /home/aimed_user/test_casestudy;\
