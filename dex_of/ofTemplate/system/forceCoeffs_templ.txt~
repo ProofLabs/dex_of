@@ -50,4 +50,29 @@ forceCoeffs
     Aref                $aref;
 }
 
+force_computation
+{
+    // Mandatory entries
+    type            forces;
+    libs            ("libforces.so");
+    patches          ( "airfoil.*" );
+    writeControl    timeStep;
+    writeInterval   100;
+
+
+    // Optional entries
+
+    // Field names
+    p               p;
+    U               U;
+    rho             rho;
+
+    // Store and write volume field representations of forces and moments
+    rho          rhoInf;
+    rhoInf       $density;
+
+    // Centre of rotation for moment calculations
+    CofR            (0 0 0);
+};
+
 // ************************************************************************* //

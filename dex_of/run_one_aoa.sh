@@ -40,10 +40,9 @@ cd dir_${fname}_aoa_$3
 echo "*** Cleaning and Running OF ***"
 ./Allclean; ./Allrun &> dir_${fname}_aoa_$3.log
 echo "*** PostProcessing ***"
+echo "*** Results ***" >> results.log
+tail  -33  log.simpleFoam  >> results.log
 grep -H ells  dir_${fname}_aoa_$3.log  >> results.log
-grep -H "Cl " dir_${fname}_aoa_$3.log >> results.log
-grep -H "Cd " dir_${fname}_aoa_$3.log >> results.log
-grep -H "Cs " dir_${fname}_aoa_$3.log >> results.log
 grep -H "Finished meshing in"  log.snappyHexMesh >> results.log
 grep -H "Execution"  dir_${fname}_aoa_$3.log  >> results.log
 grep -H Aref postProcessing/forceCoeffs/0/coefficient.dat >> results.log
