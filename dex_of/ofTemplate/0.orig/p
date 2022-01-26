@@ -24,13 +24,20 @@ boundaryField
 {
     inlet
     {
-        type            zeroGradient;
+        type            freestreamPressure;
+        freestreamValue uniform 0;
+    }
+
+    walls
+    {
+        type            freestreamPressure;
+        freestreamValue uniform 0;
     }
 
     outlet
     {
-        type            fixedValue;
-        value           $internalField;
+        type            freestreamPressure;
+        freestreamValue uniform 0;
     }
 
     airfoil

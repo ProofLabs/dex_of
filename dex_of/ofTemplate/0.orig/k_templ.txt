@@ -25,21 +25,28 @@ boundaryField
     inlet
     {
         type            inletOutlet;
-		inletValue      uniform $$kInlet;
+		    inletValue      uniform $$kInlet;
         value           uniform $$kInlet;
+    }
+
+    walls
+    {
+        type            inletOutlet;
+        inletValue      uniform $kInlet;
+        value           uniform $kInlet;
     }
 
 	outlet
     {
         type            inletOutlet;
-		inletValue      uniform $$kInlet;
-		value           uniform $$kInlet;
+    		inletValue      uniform $$kInlet;
+    		value           uniform $$kInlet;
     }
 
     airfoil
     {
         type            kqRWallFunction;
-        value           uniform $$kInlet;
+        value           uniform 1e-10;
     }
 
     #includeEtc "caseDicts/setConstraintTypes"

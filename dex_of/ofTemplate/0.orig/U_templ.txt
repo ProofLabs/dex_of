@@ -28,6 +28,12 @@ boundaryField
         freestreamValue uniform $$Uinlet;
     }
 
+    walls
+    {
+        type            freestreamVelocity;
+        freestreamValue uniform $$Uinlet;
+    }
+
 	outlet
 	{
         type            freestreamVelocity;

@@ -25,7 +25,13 @@ boundaryField
         type            calculated;
         value           uniform 0;
     }
-	
+
+    walls
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+
 	outlet
     {
         type            calculated;

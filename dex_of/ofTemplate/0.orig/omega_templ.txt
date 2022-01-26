@@ -24,9 +24,16 @@ boundaryField
 {
 	inlet
 	{
-		type            inletOutlet;
+		    type            inletOutlet;
         inletValue      uniform $$omegaInlet;
         value           uniform $$omegaInlet;
+	}
+
+  walls
+	{
+		    type            inletOutlet;
+        inletValue      uniform $omegaInlet;
+        value           uniform $omegaInlet;
 	}
 
     outlet
@@ -39,7 +46,7 @@ boundaryField
     airfoil
     {
         type            omegaWallFunction;
-        value           uniform $$omegaInlet;
+        value           uniform 1000;
 	}
 
 	#includeEtc "caseDicts/setConstraintTypes"
