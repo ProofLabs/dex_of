@@ -18,7 +18,7 @@ omegaInlet      $omegaInlet;
 
 dimensions      [0 0 -1 0 0 0 0];
 
-internalField   uniform $omegaInlet;
+internalField   uniform $$omegaInlet;
 
 boundaryField
 {

@@ -18,7 +18,7 @@ kInlet          $kInlet ;
 
 dimensions      [0 2 -2 0 0 0 0];
 
-internalField   uniform $kInlet;
+internalField   uniform $$kInlet;
 
 boundaryField
 {
@@ -32,8 +32,8 @@ boundaryField
     walls
     {
         type            inletOutlet;
-        inletValue      uniform $kInlet;
-        value           uniform $kInlet;
+        inletValue      uniform $$kInlet;
+        value           uniform $$kInlet;
     }
 
 	outlet
