@@ -101,11 +101,11 @@ def getSSTparams(problemdict):
 
     omega_wall = 10 * 6 * kinematic_viscosity / (beta_1 * cell_size_min ** 2)
     # k_wall should be zero, for numerical stability set to very small value
-    k_wall = min(1e-10, 1e-3*k_farfield_min)
+    k_wall = 1e-10
 
     outdict = {}
     if 'kInlet' not in problemdict:
-        outdict['kInlet'] = (k_farfield_min + k_farfield_max) / 2.
+        outdict['kInlet'] = max(1e-10, (k_farfield_min + k_farfield_max) / 2.)
     if 'omegaInlet' not in problemdict:
         outdict['omegaInlet'] = (omega_farfield_min + omega_farfield_max) / 2.
     if 'kWall' not in problemdict:
