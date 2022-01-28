@@ -28,6 +28,9 @@ maxiter,input,discrete,500
 infile,input,string,seaglider.stl
 outfile,input,string,UUV-0.stl
 aoa,input,continuous,1.0
+**reference area for lift and drag calculation, and reference length for moment 
+**calculation can be manually defined. If not given, the projected areas normal
+**to lift and drag direction, respectively, will be used
 **aref_drag,input,continuous,1
 **aref_lift,input,continuous,1
 **lref,input,continuous,1

@@ -77,5 +77,5 @@ nsurfacelayers,input,discrete,20
 **this defines the minimum and maximum cell refinement on the model surface --> refinement level (n m)
 **results in a maximum cell size of cellSize/2^n and a minimum cell size of cellSize/2^m on the
 **model surface
-refinementLevel,input,string,(5 7)
+refinementLevel,input,string,(7 9)
 ***
