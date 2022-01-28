@@ -5,6 +5,7 @@
 # Release 0.1
 #
 import numpy as np
+import stl
 from stl import mesh
 import math
 import sys
