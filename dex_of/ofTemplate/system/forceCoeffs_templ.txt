@@ -7,7 +7,7 @@
 \*---------------------------------------------------------------------------*/
 
 
-forceCoeffs
+forceCoeffs_cl
 {
     type                forceCoeffs;
     libs            ( "libforces.so" );
@@ -47,9 +47,52 @@ forceCoeffs
     pitchAxis           (0 0 1);
 
     lRef                $lref;
-    Aref                $aref;
+    Aref                $aref_lift;
 }
 
+
+forceCoeffs_cd
+{
+    type                forceCoeffs;
+    libs            ( "libforces.so" );
+	writeControl    timeStep;
+
+	writeInterval   100;
+
+    patches             ( "airfoil.*" );
+
+	// Optional entries
+
+    // Field names
+    p               p;
+    U               U;
+    rho             rhoInf;
+
+    // Reference pressure [Pa]
+    //pRef            0;
+
+    // Include porosity effects?
+    porosity        no;
+
+    // Store and write volume field representations of forces and moments
+    writeFields     no;
+
+    // Centre of rotation for moment calculations
+    CofR            (0 0 0);
+
+    // Freestream velocity magnitude [m/s]
+    magUInf         $Uinlet;
+
+	rhoInf			$density;
+
+    liftDir             (0 1 0);
+    dragDir             (1 0 0);
+    CofR                (0 0 0);
+    pitchAxis           (0 0 1);
+
+    lRef                $lref;
+    Aref                $aref_drag;
+}
 // ************************************************************************* //
 
 force_computation

@@ -71,9 +71,57 @@ def scale(_solid, xs, ys, zs):
     _solid.points[:, yitems] *= ys
     _solid.points[:, zitems] *= zs
 
+
+def getSSTparams(problemdict):
+    # Parameter estimates according to E R. Menter, ZONAL TWO EQUATION k-omega TURBULENCE MODELS
+    # FOR AERODYNAMIC FLOWS, AIAA, 1993
+    kinematic_viscosity = float(problemdict['kinematic_viscosity'])
+    freestream_velocity = float(problemdict['Uinlet'])
+    char_length = float(problemdict['lref'])
+    domain_size = abs(float(problemdict['xmin'])) + abs(float(problemdict['xmax']))
+    cell_size = max(float(problemdict['cellSizeX']), float(problemdict['cellSizeY']), float(problemdict['cellSizeZ']))
+    refinement_level = min([int(n) for n in problemdict['refinementLevel'].replace('(', '').replace(')', '').split(' ')])
+
+    print('refinement level', refinement_level)
+
+    beta_1 = 0.075
+
+    Re_L = freestream_velocity * char_length / kinematic_viscosity
+    cell_size_min = cell_size / 2 ** refinement_level
+
+    # omega inlet should be between these two values
+    omega_farfield_min = freestream_velocity / domain_size
+    omega_farfield_max = 10 * omega_farfield_min
+
+    # k_farfield should be between these two values
+    k_farfield_min = 10 ** -5 * freestream_velocity ** 2 / Re_L
+    k_farfield_max = 10 ** 4 * k_farfield_min
+
+    omega_wall = 10 * 6 * kinematic_viscosity / (beta_1 * cell_size_min ** 2)
+    # k_wall should be zero, for numerical stability set to very small value
+    k_wall = min(1e-10, 1e-3*k_farfield_min)
+    print(k_wall)
+
+    outdict = {}
+    if 'kInlet' not in problemdict:
+        outdict['kInlet'] = (k_farfield_min + k_farfield_max) / 2.
+    if 'omegaInlet' not in problemdict:
+        outdict['omegaInlet'] = (omega_farfield_min + omega_farfield_max) / 2.
+    if 'kWall' not in problemdict:
+        outdict['kWall'] = k_wall
+    if 'omegaWall' not in problemdict:
+        outdict['omegaWall'] = omega_wall
+
+    return outdict
+
+
+
+
+
 # Arg1 is the original file, arg 2 is the AOA, Arg 3 is the final file
 
 def stlPrep(configdict):
+    outdict = {}
 #    print("usage python stlPrep.py orig.stl aoa_degrees final.stl ")
     infile = configdict['infile']
     aoa = float(configdict['aoa'])
@@ -93,9 +141,25 @@ def stlPrep(configdict):
     # print("Bounding Box")
     # print (find_mins_maxs(your_mesh))
 
+    # scale and translate the mesh
     translate(your_mesh,-cog[0],-cog[1],-cog[2])
     scale(your_mesh,scalex,scaley,scalez)
-    your_mesh.rotate([0,0,1],math.radians(float(aoa)))
+
+    your_mesh.save("temp.stl", mode=stl.Mode.ASCII)
+    # calculate projected areas at 0deg AOA
+    if 'aref_lift' not in configdict:
+        cmd = "parea -xz -stl " + "temp.stl"
+        outpa = os.popen(cmd).read()
+        # print("Lref Aref")
+        # print(lref)
+        aref_lift = float(outpa.split(":")[1])
+        outdict['aref_lift'] = aref_lift
+
+    if 'aref_drag' not in configdict:
+        cmd = "parea -yz -stl " + "temp.stl"
+        outpa = os.popen(cmd).read()
+        aref_drag = float(outpa.split(":")[1])
+        outdict['aref_drag'] = aref_drag
 
     volume, cog, inertia = your_mesh.get_mass_properties()
     # print("Volume                                  = {0}".format(volume))
@@ -108,28 +172,19 @@ def stlPrep(configdict):
     minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(your_mesh)
     bbox = [minx,maxx,miny,maxy,minz,maxz]
 
-    lref = maxx-minx
+    if 'lref' not in configdict:
+        lref = maxx-minx
+        outdict['lref'] = lref
 
-    # Use PAREA TO get the projections  parea -
+    # rotate the mesh
+    your_mesh.rotate([0,0,1],math.radians(float(aoa)))
 
-    your_mesh.save("temp.stl")
-    #
-    # parea needs ascii stl - mesh.save() produces binary!
-    # boo! convert it to ascci and give it to parea
-    # stl2ascii --> apt-get install numpy-stl (not pip install)
-    #
-    cmd = "stl2ascii temp.stl " + outfile
-    os.system(cmd)
-    cmd = "parea -yz -stl " + outfile
-    outpa = os.popen(cmd).read()
-    #print("Lref Aref")
-    #print(lref)
-    aref = float(outpa.split(":")[1])
-    # print("lref = %s" % lref)
-    # print("Aref = %s" % float(aref))
-    # print("**done**")
-    return {'outfile':outfile,'lref': lref, 'aref': aref,'volume':volume,
-        'cog':cog,'inertia':inertia,'boundingbox':bbox}
+    # save the mesh
+    your_mesh.save(outfile, mode=stl.Mode.ASCII)
+
+    outdict.update({'outfile':outfile,'volume':volume,
+        'cog':cog,'inertia':inertia,'boundingbox':bbox})
+    return outdict
 
 def kajiki_it(templfile,outfile,problemdict):
     with open(templfile) as templ:
@@ -247,6 +302,19 @@ if len(named) != 0 :
 problemdict = stlPrep(configdict)
 problemdict.update(configdict)
 problemdict.update(computational_domain(problemdict))
+
+if 'refinementLevel' not in problemdict:
+    print('WARNING - The mesh surface refinement level is not specified. Default values of (5 7) will be used.')
+    problemdict['refinementLevel'] = '(5 7)'
+
+problemdict.update(getSSTparams(problemdict))
+print(problemdict)
+
 setup_of(problemdict)
 print("**** ALL DONE ****")
 # do the overwrite.
+
+
+# if Aref and lref in dictionary, don't calculate them --> Aref should be taken before rotation?!
+# calculate the turbulence properties (if not given in dictionary)
+# incorporate number of refinement steps (set standard if not given)
