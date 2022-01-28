@@ -83,8 +83,6 @@ def getSSTparams(problemdict):
     cell_size = max(float(problemdict['cellSizeX']), float(problemdict['cellSizeY']), float(problemdict['cellSizeZ']))
     refinement_level = min([int(n) for n in problemdict['refinementLevel'].replace('(', '').replace(')', '').split(' ')])
 
-    print('refinement level', refinement_level)
-
     beta_1 = 0.075
 
     Re_L = freestream_velocity * char_length / kinematic_viscosity
@@ -101,7 +99,6 @@ def getSSTparams(problemdict):
     omega_wall = 10 * 6 * kinematic_viscosity / (beta_1 * cell_size_min ** 2)
     # k_wall should be zero, for numerical stability set to very small value
     k_wall = min(1e-10, 1e-3*k_farfield_min)
-    print(k_wall)
 
     outdict = {}
     if 'kInlet' not in problemdict:
@@ -308,9 +305,8 @@ if 'refinementLevel' not in problemdict:
     print('WARNING - The mesh surface refinement level is not specified. Default values of (5 7) will be used.')
     problemdict['refinementLevel'] = '(5 7)'
 
+# calculate turbulence properties
 problemdict.update(getSSTparams(problemdict))
-print(problemdict)
-
 setup_of(problemdict)
 print("**** ALL DONE ****")
 # do the overwrite.
