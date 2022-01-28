@@ -41,12 +41,22 @@ echo "*** Cleaning and Running OF ***"
 ./Allclean; ./Allrun &> dir_${fname}_aoa_$3.log
 echo "*** PostProcessing ***"
 echo "*** Results ***" >> results.log
-tail  -33  log.simpleFoam  >> results.log
+echo " ----- LIFT AND DRAG FORCES ---- " >> results.log
+tail -13 log.simpleFoam |head -8 >> results.log
+echo " ----- LIFT AND DRAG COEFFICIENTS ---- " >> results.log
+tail -50 log.simpleFoam | grep "Cd       :" |tail -1 >> results.log
+tail -50 log.simpleFoam | grep "Cl       :" |head -1 >> results.log
+tail -50 log.simpleFoam | grep "Cs       :" |head -1 >> results.log
+echo "___ REFERENCE AREAS ----" >> results.log
+echo "Arefs" >> results.log
+find ./postProcessing -name "coefficient.dat" -exec grep -H Aref {} \; >> results.log
+echo "lrefs:" >> results.log
+find ./postProcessing -name "coefficient.dat" -exec grep -H lRef {} \; >> results.log
+echo "----- MESH DENSITIES & CPU TIMES ----- "
 grep -H ells  dir_${fname}_aoa_$3.log  >> results.log
 grep -H "Finished meshing in"  log.snappyHexMesh >> results.log
-grep -H "Execution"  dir_${fname}_aoa_$3.log  >> results.log
-grep -H Aref postProcessing/forceCoeffs/0/coefficient.dat >> results.log
-grep -H lRef postProcessing/forceCoeffs/0/coefficient.dat >> results.log
+echo " Converged In:"
+grep "Time =" log.simpleFoam | tail -2 >> results.log
 echo "Results stored in dir_${fname}_aoa_$3/results.log"
 cat ./results.log
 cd ..

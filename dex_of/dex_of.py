@@ -12,6 +12,9 @@ import sys
 import os
 import json
 import kajiki
+import logging
+
+
 
 def parse_args_any(args):
     pos = []
@@ -129,6 +132,8 @@ def stlPrep(configdict):
     scalez = float(configdict['scalez'])
 
     your_mesh = mesh.Mesh.from_file(infile)
+    # decrease loglevel
+    your_mesh.logger.setLevel(logging.ERROR)
 
     volume, cog, inertia = your_mesh.get_mass_properties()
     # print("Volume                                  = {0}".format(volume))
