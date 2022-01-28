@@ -32,8 +32,8 @@ boundaryField
   walls
 	{
 		    type            inletOutlet;
-        inletValue      uniform $omegaInlet;
-        value           uniform $omegaInlet;
+        inletValue      uniform $$omegaInlet;
+        value           uniform $$omegaInlet;
 	}
 
     outlet
