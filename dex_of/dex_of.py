@@ -300,7 +300,7 @@ if len(named) != 0 :
     for key in named:
         if key in configdict:
             configdict[key]=named[key]
-            print("Updated valued for %s given in dex file with command line" % key)
+            print("Updated the value for %s given in dex file with  that from the command line" % key)
 
 problemdict = stlPrep(configdict)
 problemdict.update(configdict)
