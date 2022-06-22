@@ -5,7 +5,7 @@ computations. dex_of scripts automates the generation of the computational box, 
 boundary conditions, meshing, analysis and post-processing. It produces lift-drag coefficients
 and forces on the boday. 
 
-Provided to performers of the DARPA/SymCPS program.
+Originally created for the performers in the DARPA/SymCPS program.
 
 
 
