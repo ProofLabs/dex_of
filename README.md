@@ -8,21 +8,27 @@ and forces on the boday.
 
 Originally created for the performers in the DARPA/SymCPS program.
 
-Flow direction is +x of the STL.
-
 Disclaimer:  Check the underlying assumptions of the 
 SimpleFOAM solutions. Results may be highly mesh senstitive for some geometries.
 Be sure to ascertain the the validity of the results. 
 
+How to use: 
+1. Source files are needed only if you want to change/modify dex_of. Users do not need to download the source.
+2. Install docker desktop on your system
+3. Use the Stevens-built docker image to run dex_of on your system. Note there may be permission issues on Linux to run docker. 
+4. on MacOS and Linux hosts, the following commands will work. See the full instructions in the documentation folder
+5. Run the commands below to get an example test case and have the docker image set up. 
+ docker run --rm -v ${PWD}:/home/aimed_user/dexof_work kishorestevens/dexof  /home/aimed_user/dex_of/setup_dexof.sh
+ cd ./test_casestudy
+ ./run_dexof.sh rough_mesh_8cores.dex seaglider.stl 1 
+6.  Flow direction is +x of the STL. Length units are meters. Use scalex,scaley, scalez parameters in the dex file to scale your stl.
 
-To rebuild the docker image kishorestevens/dexof:latest  use build.sh
+
+Building Custom Docker Images. 
+
+1. To rebuild the docker image kishorestevens/dexof:latest  use build.sh
 ./build.sh
 
-If you want to call the image something else, Change the image label inside the script.
-
-Stevens-built docker image
-I)	docker run --rm -v ${PWD}:/home/aimed_user/dexof_work kishorestevens/dexof  /home/aimed_user/dex_of/setup_dexof.sh
-II)	cd ./test_casestudy
-III) ./run_dexof.sh rough_mesh_8cores.dex seaglider.stl 1  
+2. If you want to call the image something else, Change the image label inside the script.
 
 https://prooflab.stevens.edu
