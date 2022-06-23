@@ -5,8 +5,14 @@ computations. dex_of scripts automates the generation of the computational box, 
 boundary conditions, meshing, analysis and post-processing. It produces lift-drag coefficients
 and forces on the boday. 
 
+
 Originally created for the performers in the DARPA/SymCPS program.
 
+Flow direction is +x of the STL.
+
+Disclaimer:  Check the underlying assumptions of the 
+SimpleFOAM solutions. Results may be highly mesh senstitive for some geometries.
+Be sure to ascertain the the validity of the results. 
 
 
 To rebuild the docker image kishorestevens/dexof:latest  use build.sh
