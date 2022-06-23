@@ -25,4 +25,4 @@ I)	docker run --rm -v ${PWD}:/home/aimed_user/dexof_work kishorestevens/dexof  /
 II)	cd ./test_casestudy
 III) ./run_dexof.sh rough_mesh_8cores.dex seaglider.stl 1  
 
-https://prooflabs.stevens.edu
+https://prooflab.stevens.edu
