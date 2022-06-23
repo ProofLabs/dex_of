@@ -26,10 +26,10 @@ How to use:
 
 Building Custom Docker Images. 
 
-1. To rebuild the docker image kishorestevens/dexof:latest  use build.sh supplied in this repo.
+1. To rebuild the docker image kishorestevens/dexof:latest, clone or fork this repo, and  use build.sh 
 
 ./build.sh
 
-2. If you want to call the image something else, change the image label inside the script.
+2. If you want to call the image something else, edit the label in the build.sh script.
 
 https://prooflab.stevens.edu
