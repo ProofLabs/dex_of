@@ -1,4 +1,9 @@
 #!/usr/bin/openfoam2112
+echo "******************************************"
+echo "**     DEXTER-OPENFOAM INTERFACE        **"
+echo "**  Stevens Institute of Technology     **"
+echo "**  No warranties: use at your own risk **"
+echo "******************************************"
 
 echo "USAGE: run_dexof_axisymmetric.sh dexfile stlfile"
 if [ -z "$1" ]
