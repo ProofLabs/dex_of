@@ -173,8 +173,8 @@ def stlPrep(configdict):
         outpa = os.popen(cmd).read()
         aref_drag = float(outpa.split(":")[1])
         if AXISYM:
-            # scale the drag area by the wedge angle (5deg) and 1/2 (only upper half)
-            outdict['aref_drag'] = aref_drag * 5./360. * 0.5
+            # scale the drag area by the wedge angle (5deg)
+            outdict['aref_drag'] = aref_drag * 5./360.
         else:
             outdict['aref_drag'] = aref_drag
 

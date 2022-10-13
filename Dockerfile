@@ -9,7 +9,7 @@ RUN apt-get update \
   && apt-get install -y python3-pip python3-dev numpy-stl\
   && cd /usr/local/bin \
   && ln -s /usr/bin/python3 python \
-  && pip3 install numpy==1.16.4 \
+  && pip3 install numpy \
   && pip3 install --upgrade pip  \
   && pip3 install numpy kajiki parea
 
