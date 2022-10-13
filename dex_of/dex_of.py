@@ -14,7 +14,9 @@ import json
 import kajiki
 import logging
 
-
+AXISYM = False
+# tolerance of cog of axisymmetric bodies (cog[1] and cog[2] have to be zero or close to zero)
+AXI_TOL = 1e-6
 
 def parse_args_any(args):
     pos = []
@@ -145,7 +147,15 @@ def stlPrep(configdict):
     # print (find_mins_maxs(your_mesh))
 
     # scale and translate the mesh
-    translate(your_mesh,-cog[0],-cog[1],-cog[2])
+    if AXISYM:
+        if abs(cog[1]) > AXI_TOL or abs(cog[2]) > AXI_TOL:
+            print("Center of gravity seems to be not aligned with the x-axis! Axisymmetric analysis requires a 3D "
+                  "axisymmetric body as input, with the axis of symmetry being the x-axis! COG:", cog)
+            exit()
+        translate(your_mesh, -cog[0], 0, 0)
+    else:
+        translate(your_mesh,-cog[0],-cog[1],-cog[2])
+
     scale(your_mesh,scalex,scaley,scalez)
 
     your_mesh.save("temp.stl", mode=stl.Mode.ASCII)
@@ -162,7 +172,11 @@ def stlPrep(configdict):
         cmd = "parea -yz -stl " + "temp.stl"
         outpa = os.popen(cmd).read()
         aref_drag = float(outpa.split(":")[1])
-        outdict['aref_drag'] = aref_drag
+        if AXISYM:
+            # scale the drag area by the wedge angle (5deg) and 1/2 (only upper half)
+            outdict['aref_drag'] = aref_drag * 5./360. * 0.5
+        else:
+            outdict['aref_drag'] = aref_drag
 
     volume, cog, inertia = your_mesh.get_mass_properties()
     # print("Volume                                  = {0}".format(volume))
@@ -180,7 +194,8 @@ def stlPrep(configdict):
         outdict['lref'] = lref
 
     # rotate the mesh
-    your_mesh.rotate([0,0,1],math.radians(float(aoa)))
+    if not AXISYM:
+        your_mesh.rotate([0,0,1],math.radians(float(aoa)))
 
     # save the mesh
     your_mesh.save(outfile, mode=stl.Mode.ASCII)
@@ -244,8 +259,15 @@ def setup_of(problemdict):
     else:
         print("Warning: Casefolder already exists, files will be overwritten")
 
+    if AXISYM:
+        template_fldr = "ofTemplate_axisymmetric"
+    else:
+        template_fldr = "ofTemplate"
+
+    ofcopycmd = 'cp -r ' + os.path.join(os.path.join(problemdict['dexof_path'], template_fldr), '*') + " " + casefolder
+
     # create files that need to be templated
-    ofcopycmd  = 'cp -r ' + problemdict['dexof_path']+"/ofTemplate/* " + casefolder
+    # ofcopycmd = 'cp -r ' + problemdict['dexof_path']+"/ofTemplate/* " + casefolder
     print("Copying::",ofcopycmd)
     #os.system('cp -r ofTemplate/* '+ casefolder)
     os.system(ofcopycmd)
@@ -283,6 +305,9 @@ print ("Dex_of called with arguments:")
 print(f" Positional Arguments: {pos}")
 print(f" Named Arguments: {named}")
 
+if 'axisymmetric' in named.keys():
+    AXISYM = True
+
 dexof_path = os.path.dirname(os.path.realpath(__file__))
 print("Path: ",dexof_path)
 current_dir = os.path.abspath(os.getcwd())
@@ -290,17 +315,21 @@ current_dir = os.path.abspath(os.getcwd())
 # dex file is postional 0
 configdict = dex2dict(pos[1])
 configdict['dexof_path'] = dexof_path
-configdict['current_dir']= current_dir
+configdict['current_dir'] = current_dir
 # overwrite named named arguments from dict -ignore new arguments
 if (len(pos) != 2):
     print("First positional argument is needed.\n Program looks for a .dex file")
     exit()
 
-if len(named) != 0 :
+if len(named) != 0:
     for key in named:
         if key in configdict:
             configdict[key]=named[key]
             print("Updated the value for %s given in dex file with  that from the command line" % key)
+
+if AXISYM and int(configdict['computegrid'].split(' ')[-1][:-1]) != 1:
+    print("Computational grid has to be of shape (n m 1) for axisymmetric problems! Given grid:", configdict['computegrid'])
+    exit()
 
 problemdict = stlPrep(configdict)
 problemdict.update(configdict)
