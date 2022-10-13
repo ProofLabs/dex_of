@@ -55,7 +55,8 @@ boundaryField
 
     bot
       {
-       	type            empty;
+      type            kqRWallFunction;
+      value           uniform $kWall;
     }
 
     airfoil

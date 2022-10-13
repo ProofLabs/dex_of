@@ -16,7 +16,7 @@ import logging
 
 AXISYM = False
 # tolerance of cog of axisymmetric bodies (cog[1] and cog[2] have to be zero or close to zero)
-AXI_TOL = 1e-6
+AXI_TOL = 1e-3
 
 def parse_args_any(args):
     pos = []

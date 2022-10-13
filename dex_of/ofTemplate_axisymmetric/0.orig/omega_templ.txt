@@ -55,7 +55,8 @@ boundaryField
 
     bot
       {
-       	type            empty;
+      type            omegaWallFunction;
+      value           uniform $omegaWall;
     }
 
     airfoil

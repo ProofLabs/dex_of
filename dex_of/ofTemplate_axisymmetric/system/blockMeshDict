@@ -59,7 +59,7 @@ boundary
 
     bot
     {
-        type empty;
+        type patch;
         faces
         (
             (1 5 4 0)

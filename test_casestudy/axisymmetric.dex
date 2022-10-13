@@ -21,7 +21,7 @@ runopenfoam,input,string,yes
 backgroundof,input,string,no
 kOmegaTol,input,continuous,1e-8
 upTol,input,continuous,1e-8
-maxiter,input,discrete,500
+maxiter,input,discrete,2000
 ***
 *** Geometry Details
 ***

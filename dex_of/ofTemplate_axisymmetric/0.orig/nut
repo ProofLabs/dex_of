@@ -50,7 +50,9 @@ boundaryField
 
     bot
       {
-       	type            empty;
+        type            nutkWallFunction;
+        type            nutkWallFunction;
+        value           uniform 0;
     }
 
 

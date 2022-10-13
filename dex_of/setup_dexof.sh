@@ -17,7 +17,8 @@ echo "******************************************"
 
 cp -r /home/aimed_user/test_casestudy .
 cp /home/aimed_user/dex_of/run_dexof.sh  ./test_casestudy
-cp -r /home/aimed_user/documentation . 
+cp /home/aimed_user/dex_of/run_dexof_axisymmetric.sh  ./test_casestudy
+cp -r /home/aimed_user/documentation .
 
 echo " Notes: "
 echo " A) cd to test_casestudy folder"

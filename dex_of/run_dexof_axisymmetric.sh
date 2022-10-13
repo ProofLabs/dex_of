@@ -8,7 +8,7 @@ echo "******************************************"
 echo "USAGE: run_dexof_axisymmetric.sh dexfile stlfile"
 if [ -z "$1" ]
   then
-    echo "No dex file is not supplied"
+    echo "No dex file is supplied"
     exit 1
 fi
 

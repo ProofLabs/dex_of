@@ -52,7 +52,7 @@ boundaryField
 
     bot
       {
-       	type            empty;
+        type            zeroGradient;
     }
 
 
