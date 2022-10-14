@@ -1,17 +1,16 @@
 # Docker file for a slim Ubuntu-based Python3 image
 
-FROM ubuntu:latest
+FROM ubuntu:20.04
 MAINTAINER KP "kpochira@stevens.edu"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
-  && apt-get install -y python3-pip python3-dev numpy-stl\
+  && apt-get install -y python3-pip python3-dev\
   && cd /usr/local/bin \
   && ln -s /usr/bin/python3 python \
-  && pip3 install numpy \
   && pip3 install --upgrade pip  \
-  && pip3 install numpy kajiki parea
+  && pip3 install numpy kajiki parea numpy-stl
 
 
   # Install any extra things we might need

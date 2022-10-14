@@ -308,6 +308,11 @@ print(f" Named Arguments: {named}")
 if 'axisymmetric' in named.keys():
     AXISYM = True
 
+if AXISYM:
+    print("***** Axisymmetric analysis *****")
+else:
+    print("***** 3D analysis *****")
+
 dexof_path = os.path.dirname(os.path.realpath(__file__))
 print("Path: ",dexof_path)
 current_dir = os.path.abspath(os.getcwd())
