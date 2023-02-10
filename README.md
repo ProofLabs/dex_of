@@ -32,4 +32,4 @@ Building Custom Docker Images.
 
 2. If you want to call the image something else, edit the label in the build.sh script.
 
-https://prooflab.stevens.edu
+http://prooflab.stevens.edu
