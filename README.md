@@ -17,11 +17,15 @@ How to use:
 2. Install docker desktop on your system
 3. Use the Stevens-built docker image to run dex_of on your system. Note there may be permission issues on Linux to run docker. 
 4. on MacOS and Linux hosts, the following commands will work. See the full instructions in the documentation folder
-5. Run the commands below to get an example test case and have the docker image set up. 
+5. Run the commands below to get an example test case and have the docker image set up.
+6. 
  docker run --rm -v ${PWD}:/home/aimed_user/dexof_work kishorestevens/dexof  /home/aimed_user/dex_of/setup_dexof.sh
+
  cd ./test_casestudy
- ./run_dexof.sh rough_mesh_8cores.dex seaglider.stl 1 
-6.  Flow direction is +x of the STL. Length units are meters. Use scalex,scaley, scalez parameters in the dex file to scale your stl.
+ 
+ ./run_dexof.sh rough_mesh_8cores.dex seaglider.stl 1
+
+8.  Flow direction is +x of the STL. Length units are meters. Use scalex,scaley, scalez parameters in the dex file to scale your stl.
 
 
 Building Custom Docker Images. 
